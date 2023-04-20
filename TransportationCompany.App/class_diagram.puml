@@ -1,0 +1,59 @@
+﻿@startuml
+'https://plantuml.com/class-diagram
+
+abstract class Transport {
++ passengerCapacity : int
++ carryingCapacity : double
+
++ {abstract} Move() : void
+}
+
+Transport <|-- MotorTransport
+abstract class MotorTransport {
++ Move() : void
+}
+
+Transport <|-- AirTransport
+abstract class AirTransport {
++ Move() : void
+}
+
+interface ICargoTransportation {
++ {abstract} LoadingOfCargo() : void
++ {abstract} UnloadingOfCargo() : void
+}
+
+interface IPassengerTransportation {
++ {abstract} BoardingOfPassengers() : void
++ {abstract} DisembarkationOfPassengers() : void
+}
+
+MotorTransport <|-- Bus
+IPassengerTransportation <|.. Bus
+class Bus {
++ BoardingOfPassengers() : void
++ DisembarkationOfPassengers() : void
+}
+
+MotorTransport <|-- Truck
+ICargoTransportation <|.. Truck
+class Truck {
++ LoadingOfCargo() : void
++ UnloadingOfCargo() : void
+}
+
+AirTransport <|-- AirBus
+IPassengerTransportation <|.. AirBus
+class AirBus {
++ BoardingOfPassengers() : void
++ DisembarkationOfPassengers() : void
+}
+
+AirTransport <|-- CargoPlane
+ICargoTransportation <|.. CargoPlane
+class CargoPlane {
++ LoadingOfCargo() : void
++ UnloadingOfCargo() : void
+}
+
+@enduml
