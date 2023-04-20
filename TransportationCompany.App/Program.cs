@@ -10,45 +10,40 @@ Console.WriteLine("1. Автомобильный транспорт");
 Console.WriteLine("2. Воздушный транспорт");
 var typeOfTransport = Console.ReadLine();
 
-Transport transport = null;
-switch (typeOfTransport)
+Transport transport = typeOfTransport switch
 {
-    case "1": // 1. Автомобильный транспорт
-        switch (transportationOption)
+    "1" => // 1. Автомобильный транспорт
+        transportationOption switch
         {
-            case "1": // 1. Пассажирские перевозки
-                transport = new Bus();
-                break;
-            case "2": // 2. Грузовые перевозки
-                transport = new Truck();
-                break;
+            "1" => new Bus(), // 1. Пассажирские перевозки
+            "2" => new Truck() // 2. Грузовые перевозки
+        },
+    "2" => // 2. Воздушный транспорт
+        transportationOption switch
+        {
+            "1" => new AirBus(), // 1. Пассажирские перевозки
+            "2" => new CargoPlane() // 2. Грузовые перевозки
         }
+};
+
+switch (transport)
+{
+    case IPassengerTransportation passengerTransportation:
+        passengerTransportation.BoardingOfPassengers();
         break;
-    case "2": // 2. Воздушный транспорт
-        switch (transportationOption)
-        {
-            case "1": // 1. Пассажирские перевозки
-                transport = new AirBus();
-                break;
-            case "2": // 2. Грузовые перевозки
-                transport = new CargoPlane();
-                break;
-        }
+    case ICargoTransportation cargoTransportation:
+        cargoTransportation.LoadingOfCargo();
         break;
 }
 
-if (transport is IPassengerTransportation)
-{
-    ((IPassengerTransportation)transport).BoardingOfPassengers();
-} else if (transport is ICargoTransportation)
-{
-    ((ICargoTransportation)transport).LoadingOfCargo();
-}
 transport.Move();
-if (transport is IPassengerTransportation)
+
+switch (transport)
 {
-    ((IPassengerTransportation)transport).DisembarkationOfPassengers();
-} else if (transport is ICargoTransportation)
-{
-    ((ICargoTransportation)transport).UnloadingOfCargo();
+    case IPassengerTransportation passengerTransportation:
+        passengerTransportation.DisembarkationOfPassengers();
+        break;
+    case ICargoTransportation cargoTransportation:
+        cargoTransportation.UnloadingOfCargo();
+        break;
 }
